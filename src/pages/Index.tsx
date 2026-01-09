@@ -62,9 +62,10 @@ export default function Index() {
   const [signals, setSignals] = useState<Signal[]>(generateMockSignals());
   const [isAutoTrading, setIsAutoTrading] = useState(false);
   const [balance, setBalance] = useState(1000);
+  const [initialBalance] = useState(1000);
   const [trades, setTrades] = useState<Trade[]>([]);
-  const [minBet, setMinBet] = useState([0.5]);
-  const [maxBet, setMaxBet] = useState([100]);
+  const [minBet, setMinBet] = useState([1]);
+  const [maxBet, setMaxBet] = useState([2]);
   const [candles] = useState(generateMockCandles());
   const [selectedPair, setSelectedPair] = useState('EUR/USD');
 
@@ -109,7 +110,8 @@ export default function Index() {
         }, 60000);
       }
 
-      if (balance < (1000 - 5)) {
+      const totalLoss = initialBalance - balance;
+      if (totalLoss >= 5) {
         setIsAutoTrading(false);
       }
     }, 60000);
@@ -331,9 +333,9 @@ export default function Index() {
                   <Slider 
                     value={minBet} 
                     onValueChange={setMinBet}
-                    min={0.5}
-                    max={10}
-                    step={0.5}
+                    min={1}
+                    max={2}
+                    step={0.1}
                     className="mt-2"
                   />
                 </div>
@@ -343,9 +345,9 @@ export default function Index() {
                   <Slider 
                     value={maxBet} 
                     onValueChange={setMaxBet}
-                    min={10}
-                    max={500}
-                    step={10}
+                    min={1}
+                    max={2}
+                    step={0.1}
                     className="mt-2"
                   />
                 </div>
